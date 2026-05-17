@@ -91,8 +91,8 @@ export async function getBookmarkedSnippets(userId: string) {
       snippet: {
         include: {
           author: { select: { id: true, name: true, image: true, email: true } },
-          likes: { where: { userId }, select: { id: true } },
-          bookmarks: { where: { userId }, select: { id: true } },
+          likes: { where: { userId } },
+          bookmarks: { where: { userId } },
           _count: { select: { likes: true, bookmarks: true } },
         },
       },
