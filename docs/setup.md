@@ -3,7 +3,7 @@
 ## Supabase Postgres
 
 1. Create a Supabase project.
-2. In Supabase SQL Editor, create a Prisma database role:
+2. In Supabase SQL Editor, create a privileged Prisma migration role and a less privileged app runtime role:
 
 ```sql
 create user "prisma" with password 'replace_with_a_strong_password' bypassrls createdb;
@@ -14,13 +14,23 @@ grant all on all tables in schema public to prisma;
 grant all on all routines in schema public to prisma;
 grant all on all sequences in schema public to prisma;
 alter default privileges for role postgres in schema public grant all on tables to prisma;
-alter default privileges for role postgres in schema public grant all on all routines to prisma;
+alter default privileges for role postgres in schema public grant all on routines to prisma;
 alter default privileges for role postgres in schema public grant all on sequences to prisma;
+
+create user "devsnip_app" with password 'replace_with_a_runtime_password';
+grant usage on schema public to devsnip_app;
+grant select, insert, update, delete on all tables in schema public to devsnip_app;
+grant usage, select on all sequences in schema public to devsnip_app;
+alter default privileges for role prisma in schema public grant select, insert, update, delete on tables to devsnip_app;
+alter default privileges for role prisma in schema public grant usage, select on sequences to devsnip_app;
 ```
 
-3. Copy the Supavisor session pooler connection string into `DATABASE_URL`.
-4. Run `npm run prisma:migrate -- --name init` to create tables.
-5. Run `npm run prisma:generate` after schema changes.
+3. Copy the Supavisor session pooler connection string for `devsnip_app` into `DATABASE_URL`.
+4. Copy the Supavisor session pooler connection string for `prisma` into `MIGRATE_DATABASE_URL`.
+5. Run `npm run prisma:migrate -- --name init` to create tables.
+6. Run `npm run prisma:generate` after schema changes.
+
+For quick local MVP work, `DATABASE_URL` and `MIGRATE_DATABASE_URL` can point to the same Prisma role. For production, keep them separate so the app runtime does not use a `createdb`/`bypassrls` migration role.
 
 ## GitHub OAuth
 
@@ -36,3 +46,5 @@ alter default privileges for role postgres in schema public grant all on sequenc
 2. Fill all values.
 3. Run `npm run prisma:migrate -- --name init`.
 4. Run `npm run dev`.
+
+Prisma commands load both `.env` and `.env.local`; `.env.local` wins when both files define the same variable. `npm run build` also runs `prisma generate` first so a clean checkout has the generated client before Next.js compiles.
