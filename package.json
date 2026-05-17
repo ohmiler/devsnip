@@ -4,14 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:doppler": "doppler run -- next dev",
     "prebuild": "prisma generate",
     "build": "next build",
+    "build:doppler": "doppler run -- npm run build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:generate:doppler": "doppler run -- prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate:doppler": "doppler run -- prisma migrate dev"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
