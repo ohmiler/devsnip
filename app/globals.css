@@ -51,6 +51,9 @@
 :root {
   --background: #f4f4f5;
   --foreground: #09090b;
+  --font-geist-sans: Arial, Helvetica, sans-serif;
+  --font-geist-mono: "Cascadia Code", "Segoe UI Mono", "Liberation Mono",
+    Menlo, Monaco, Consolas, monospace;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
