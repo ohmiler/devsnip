@@ -25,12 +25,24 @@ alter default privileges for role prisma in schema public grant select, insert, 
 alter default privileges for role prisma in schema public grant usage, select on sequences to devsnip_app;
 ```
 
-3. Copy the Supavisor session pooler connection string for `devsnip_app` into `DATABASE_URL`.
+3. Copy the Supavisor pooler connection string for `devsnip_app` into `DATABASE_URL`. For Vercel/serverless production, prefer the transaction pooler URL when Supabase provides it.
 4. Copy the Supavisor session pooler connection string for `prisma` into `MIGRATE_DATABASE_URL`.
 5. Run `npm run prisma:migrate -- --name init` to create tables.
 6. Run `npm run prisma:generate` after schema changes.
 
 For quick local MVP work, `DATABASE_URL` and `MIGRATE_DATABASE_URL` can point to the same Prisma role. For production, keep them separate so the app runtime does not use a `createdb`/`bypassrls` migration role.
+
+## Production on Vercel
+
+Set `DATABASE_POOL_MAX=1` in Vercel to keep each serverless runtime from opening too many Supabase connections. This is especially important if `DATABASE_URL` uses Supavisor session mode, where Supabase can reject requests with `EMAXCONNSESSION max clients reached`.
+
+After adding a new migration, deploy it to the production database before or during the Vercel rollout:
+
+```bash
+npm run prisma:migrate:deploy
+```
+
+For email/password sign-in, confirm the production database has the latest migration that adds `User.password_hash`. For GitHub OAuth, also confirm the production app has `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, `GITHUB_ID`, `GITHUB_SECRET`, and a GitHub callback URL matching `https://your-domain/api/auth/callback/github`.
 
 ## GitHub OAuth
 

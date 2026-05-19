@@ -16,6 +16,7 @@
     "prisma:generate": "prisma generate",
     "prisma:generate:doppler": "doppler run -- prisma generate",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:migrate:doppler": "doppler run -- prisma migrate dev"
   },
   "dependencies": {
