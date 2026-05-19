@@ -7,6 +7,21 @@ function normalizeQuery(query?: string) {
   return query?.trim().slice(0, 80) ?? "";
 }
 
+function feedInclude(viewerId?: string) {
+  const userId = viewerId ?? "";
+
+  return {
+    author: {
+      select: { id: true, name: true, image: true, email: true },
+    },
+    likes: { where: { userId }, select: { id: true } },
+    bookmarks: { where: { userId }, select: { id: true } },
+    _count: {
+      select: { likes: true, bookmarks: true },
+    },
+  } as const;
+}
+
 export async function getFeedSnippets({
   query,
   viewerId,
@@ -23,33 +38,39 @@ export async function getFeedSnippets({
             { title: { contains: q, mode: "insensitive" } },
             { caption: { contains: q, mode: "insensitive" } },
             { language: { contains: q, mode: "insensitive" } },
+            { code: { contains: q, mode: "insensitive" } },
             { author: { name: { contains: q, mode: "insensitive" } } },
+            { author: { email: { contains: q, mode: "insensitive" } } },
           ],
         }
       : undefined,
     orderBy: { createdAt: "desc" },
     take: 40,
-    include: {
-      author: {
-        select: { id: true, name: true, image: true, email: true },
-      },
-      likes: viewerId
-        ? { where: { userId: viewerId }, select: { id: true } }
-        : false,
-      bookmarks: viewerId
-        ? { where: { userId: viewerId }, select: { id: true } }
-        : false,
-      _count: {
-        select: { likes: true, bookmarks: true },
-      },
-    },
+    include: feedInclude(viewerId),
   });
 
   return snippets.map((snippet) => ({
     ...snippet,
-    likedByViewer: viewerId ? snippet.likes.length > 0 : false,
-    bookmarkedByViewer: viewerId ? snippet.bookmarks.length > 0 : false,
+    likedByViewer: snippet.likes.length > 0,
+    bookmarkedByViewer: snippet.bookmarks.length > 0,
   }));
+}
+
+export async function getSnippetById(snippetId: string, viewerId?: string) {
+  const snippet = await prisma.snippet.findUnique({
+    where: { id: snippetId },
+    include: feedInclude(viewerId),
+  });
+
+  if (!snippet) {
+    return null;
+  }
+
+  return {
+    ...snippet,
+    likedByViewer: snippet.likes.length > 0,
+    bookmarkedByViewer: snippet.bookmarks.length > 0,
+  };
 }
 
 export async function getSnippetForEdit(snippetId: string, userId: string) {

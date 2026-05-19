@@ -5,7 +5,7 @@ DevSnip is a small social web app for developers to share public code snippets. 
 ## Features
 
 - Public snippet feed
-- GitHub OAuth sign-in
+- Email/password registration, email/password sign-in, and GitHub OAuth sign-in
 - Snippet create, edit, and delete dashboard
 - Likes and bookmarks
 - Basic feed search

@@ -6,13 +6,13 @@ describe("Button", () => {
   it("renders a child element when asChild is used", () => {
     render(
       <Button asChild>
-        <a href="/snippets/new">New snippet</a>
+        <a href="#new-snippet">New snippet</a>
       </Button>,
     );
 
     expect(screen.getByRole("link", { name: "New snippet" })).toHaveAttribute(
       "href",
-      "/snippets/new",
+      "#new-snippet",
     );
     expect(
       screen.queryByRole("button", { name: "New snippet" }),

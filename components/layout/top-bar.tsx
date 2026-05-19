@@ -30,7 +30,7 @@ export function TopBar({
           <span>DevSnip</span>
         </Link>
         <div className="hidden flex-1 justify-center md:flex">
-          <SearchForm query={query} />
+          <SearchForm key={`desktop-${query ?? ""}`} query={query} />
         </div>
         <div className="ml-auto flex items-center gap-3">
           {session?.user ? (
@@ -52,7 +52,7 @@ export function TopBar({
         </div>
       </div>
       <div className="border-t border-zinc-100 px-4 py-3 md:hidden">
-        <SearchForm query={query} />
+        <SearchForm key={`mobile-${query ?? ""}`} query={query} />
       </div>
       <nav className="border-t border-zinc-100 px-2 py-2 lg:hidden">
         <div className="mx-auto grid max-w-2xl grid-cols-4 gap-1">
