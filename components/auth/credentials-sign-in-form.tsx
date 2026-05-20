@@ -19,7 +19,12 @@ export function CredentialsSignInForm() {
   );
 
   return (
-    <form action={action} className="space-y-4">
+    <form
+      action={action}
+      aria-label="Sign in"
+      className="space-y-4"
+      noValidate
+    >
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -27,7 +32,6 @@ export function CredentialsSignInForm() {
           name="email"
           type="email"
           autoComplete="email"
-          required
           className="h-10"
         />
       </div>
@@ -38,7 +42,6 @@ export function CredentialsSignInForm() {
           name="password"
           type="password"
           autoComplete="current-password"
-          required
           className="h-10"
         />
       </div>

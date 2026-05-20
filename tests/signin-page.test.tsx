@@ -21,6 +21,11 @@ describe("SignInPage", () => {
       "name",
       "password",
     );
+    expect(screen.getByLabelText(/email/i)).not.toBeRequired();
+    expect(screen.getByLabelText(/password/i)).not.toBeRequired();
+    expect(screen.getByRole("form", { name: /sign in/i })).toHaveAttribute(
+      "novalidate",
+    );
     expect(screen.getByRole("button", { name: "Sign In" })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /create an account/i }),
