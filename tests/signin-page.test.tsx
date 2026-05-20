@@ -26,6 +26,19 @@ describe("SignInPage", () => {
     expect(screen.getByRole("form", { name: /sign in/i })).toHaveAttribute(
       "novalidate",
     );
+    expect(screen.getByTestId("credentials-sign-in-form")).toBeInTheDocument();
+    expect(screen.getByTestId("credentials-email-input")).toHaveAttribute(
+      "name",
+      "email",
+    );
+    expect(screen.getByTestId("credentials-password-input")).toHaveAttribute(
+      "name",
+      "password",
+    );
+    expect(screen.getByTestId("credentials-sign-in-submit")).toHaveAttribute(
+      "type",
+      "submit",
+    );
     expect(screen.getByRole("button", { name: "Sign In" })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /create an account/i }),
