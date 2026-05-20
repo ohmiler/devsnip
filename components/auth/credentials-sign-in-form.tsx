@@ -64,6 +64,7 @@ export function CredentialsSignInForm() {
         className="w-full bg-zinc-950 text-white hover:bg-zinc-800"
         data-testid="credentials-sign-in-submit"
         disabled={pending}
+        formNoValidate
       >
         Sign In
       </Button>
