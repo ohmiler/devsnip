@@ -39,6 +39,9 @@ describe("SignInPage", () => {
       "type",
       "submit",
     );
+    expect(screen.getByTestId("credentials-sign-in-submit")).toHaveAttribute(
+      "formnovalidate",
+    );
     expect(screen.getByRole("button", { name: "Sign In" })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /create an account/i }),
