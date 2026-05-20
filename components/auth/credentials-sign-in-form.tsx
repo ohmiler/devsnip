@@ -23,6 +23,7 @@ export function CredentialsSignInForm() {
       action={action}
       aria-label="Sign in"
       className="space-y-4"
+      data-testid="credentials-sign-in-form"
       noValidate
     >
       <div className="space-y-2">
@@ -33,6 +34,7 @@ export function CredentialsSignInForm() {
           type="email"
           autoComplete="email"
           className="h-10"
+          data-testid="credentials-email-input"
         />
       </div>
       <div className="space-y-2">
@@ -43,6 +45,7 @@ export function CredentialsSignInForm() {
           type="password"
           autoComplete="current-password"
           className="h-10"
+          data-testid="credentials-password-input"
         />
       </div>
       {state.message ? (
@@ -59,6 +62,7 @@ export function CredentialsSignInForm() {
       <Button
         type="submit"
         className="w-full bg-zinc-950 text-white hover:bg-zinc-800"
+        data-testid="credentials-sign-in-submit"
         disabled={pending}
       >
         Sign In
